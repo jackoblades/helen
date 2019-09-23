@@ -44,7 +44,8 @@ namespace Helen.Core
 
         public void Receive(Weapon weapon)
         {
-            int damage = Math.Max(0, weapon.Power - CurrentWeapon.Defense);
+            int defense = (weapon.IsPiercing) ? 0 : CurrentWeapon.Defense;
+            int damage = Math.Max(0, weapon.Effectiveness - defense);
             Health = Health - damage;
         }
 

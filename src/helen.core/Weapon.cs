@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System;
 
 namespace Helen.Core
 {
@@ -10,11 +11,15 @@ namespace Helen.Core
 
         public string Name { get; set; }
 
-        public int Power { get; set; }
+        public int Effectiveness { get; set; }
 
         public int Defense { get; set; }
 
         public int Speed { get; set; }
+
+        public WeaponProperties Properties { get; set; }
+
+        public bool IsPiercing => Properties.HasFlag(WeaponProperties.Piercing);
 
         #endregion
 
@@ -24,13 +29,20 @@ namespace Helen.Core
         {
         }
 
-        public Weapon(Guid id, string name, int power, int defense, int speed)
+        public Weapon(Guid id, string name, int effectiveness, int defense, int speed)
+            : this()
         {
-            Id      = id;
-            Name    = name;
-            Power   = power;
-            Defense = defense;
-            Speed   = speed;
+            Id            = id;
+            Name          = name;
+            Effectiveness = effectiveness;
+            Defense       = defense;
+            Speed         = speed;
+        }
+
+        public Weapon(Guid id, string name, int effectiveness, int defense, int speed, WeaponProperties properties)
+            : this(id, name, effectiveness, defense, speed)
+        {
+            Properties = properties;
         }
 
         #endregion
