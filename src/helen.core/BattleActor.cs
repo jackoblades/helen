@@ -15,6 +15,8 @@ namespace Helen.Core
 
         public Weapon CurrentWeapon { get; set; }
 
+        public BattleActor CurrentTarget { get; set; }
+
         public bool IsAlive => Health > 0;
 
         #endregion
@@ -40,6 +42,21 @@ namespace Helen.Core
         {
             CurrentWeapon = weapon;
             Wait          = weapon.Speed;
+        }
+
+        public void Select(BattleActor target)
+        {
+            CurrentTarget = target;
+        }
+
+        public void Act()
+        {
+            if (--Wait == 0)
+            {
+                CurrentTarget.Receive(CurrentWeapon);
+                CurrentTarget = null;
+                CurrentWeapon = null;
+            }
         }
 
         public void Receive(Weapon weapon)
