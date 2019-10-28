@@ -17,7 +17,11 @@ namespace Helen.Core
 
         public int Speed { get; set; }
 
+        public int Stun { get; set; }
+
         public WeaponProperties Properties { get; set; }
+
+        public string PropertySummary => Properties.Name(this);
 
         public bool IsPiercing => Properties.HasFlag(WeaponProperties.Piercing);
 
@@ -41,8 +45,21 @@ namespace Helen.Core
             Speed         = speed;
         }
 
+        public Weapon(Guid id, string name, int effectiveness, int defense, int speed, int stun)
+            : this(id, name, effectiveness, defense, speed)
+        {
+            Stun = stun;
+            Properties |= WeaponProperties.Stun;
+        }
+
         public Weapon(Guid id, string name, int effectiveness, int defense, int speed, WeaponProperties properties)
             : this(id, name, effectiveness, defense, speed)
+        {
+            Properties = properties;
+        }
+
+        public Weapon(Guid id, string name, int effectiveness, int defense, int speed, int stun, WeaponProperties properties)
+            : this(id, name, effectiveness, defense, speed, stun)
         {
             Properties = properties;
         }

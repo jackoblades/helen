@@ -23,7 +23,7 @@ namespace Helen.Term
             A1.Add(new Weapon(Guid.NewGuid(), "Bow", 7, 2, 5));
             A1.Add(new Weapon(Guid.NewGuid(), "Heal", 25, 0, 20, WeaponProperties.TrueHealing));
             A1.Add(new Weapon(Guid.NewGuid(), "Thunder", 25, 0, 20, WeaponProperties.Piercing));
-            A2.Add(new Weapon(Guid.NewGuid(), "Claw", 5, 5, 7));
+            A2.Add(new Weapon(Guid.NewGuid(), "Claw", 5, 5, 7, 2));
 
             // Initialize BattleActors.
             PartyA[0] = A1.Battle();
@@ -61,7 +61,7 @@ namespace Helen.Term
 
             Console.WriteLine($"| {BA1.Name.PadRight(15, ' ')}{BA1.Health}/{BA1.HealthMax}");
             if (BA1.CurrentWeapon != null)
-            Console.WriteLine($"| {BA1.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA1.CurrentWeapon.Effectiveness} Def:{BA1.CurrentWeapon.Defense} - Wait:{BA1.Wait}");
+            Console.WriteLine($"| {BA1.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA1.CurrentWeapon.Effectiveness} Def:{BA1.CurrentWeapon.Defense} - Wait:{BA1.Wait} - {BA1.CurrentWeapon.PropertySummary}");
             else // Pad out.
             Console.WriteLine($"|".PadRight(PaddingLength, ' '));
 
@@ -69,7 +69,7 @@ namespace Helen.Term
 
             Console.WriteLine($"| {BA2.Name.PadRight(15, ' ')}{BA2.Health}/{BA2.HealthMax}");
             if (BA2.CurrentWeapon != null)
-            Console.WriteLine($"| {BA2.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA2.CurrentWeapon.Effectiveness} Def:{BA2.CurrentWeapon.Defense} - Wait:{BA2.Wait}");
+            Console.WriteLine($"| {BA2.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA2.CurrentWeapon.Effectiveness} Def:{BA2.CurrentWeapon.Defense} - Wait:{BA2.Wait} - {BA2.CurrentWeapon.PropertySummary}");
             else // Pad out.
             Console.WriteLine($"|".PadRight(PaddingLength, ' '));
 
@@ -93,7 +93,7 @@ namespace Helen.Term
                     Console.Write($" Eff:{$"{weapon.Effectiveness}".PadRight(4, ' ')}");
                     Console.Write($" Def:{$"{weapon.Defense}".PadRight(4, ' ')}");
                     Console.Write($" Speed:{$"{weapon.Speed}".PadRight(4, ' ')}");
-                    Console.Write($" {weapon.Properties.Name()}");
+                    Console.Write($" {weapon.PropertySummary}");
                     Console.WriteLine();
                 }
             }

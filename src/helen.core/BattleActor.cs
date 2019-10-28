@@ -61,10 +61,11 @@ namespace Helen.Core
 
         public void Receive(Weapon weapon)
         {
-            int defense = (weapon.IsPiercing) ? 0 : CurrentWeapon.Defense;
+            int defense = (weapon.IsPiercing) ? 0 : CurrentWeapon?.Defense ?? 0;
             int damage = Math.Max(0, weapon.Effectiveness - defense);
             Health = (weapon.IsHealing) ? Math.Min(HealthMax, Health + damage)
                      /*   IsDamage   */ : Math.Max(0,         Health - damage);
+            Wait += weapon.Stun;
         }
 
         #endregion
