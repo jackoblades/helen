@@ -63,7 +63,8 @@ namespace Helen.Core
         {
             int defense = (weapon.IsPiercing) ? 0 : CurrentWeapon.Defense;
             int damage = Math.Max(0, weapon.Effectiveness - defense);
-            Health = Health - damage;
+            Health = (weapon.IsHealing) ? Math.Min(HealthMax, Health + damage)
+                     /*   IsDamage   */ : Math.Max(0,         Health - damage);
         }
 
         #endregion

@@ -21,6 +21,8 @@ namespace Helen.Core
 
         public bool IsPiercing => Properties.HasFlag(WeaponProperties.Piercing);
 
+        public bool IsHealing => Properties.HasFlag(WeaponProperties.Healing);
+
         #endregion
 
         #region Constructors

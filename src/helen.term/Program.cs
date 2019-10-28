@@ -21,7 +21,7 @@ namespace Helen.Term
             // Add Equipment.
             A1.Add(new Weapon(Guid.NewGuid(), "Sword", 15, 10, 12));
             A1.Add(new Weapon(Guid.NewGuid(), "Bow", 7, 2, 5));
-            A1.Add(new Weapon(Guid.NewGuid(), "Heal", 25, 0, 20));
+            A1.Add(new Weapon(Guid.NewGuid(), "Heal", 25, 0, 20, WeaponProperties.TrueHealing));
             A1.Add(new Weapon(Guid.NewGuid(), "Thunder", 25, 0, 20, WeaponProperties.Piercing));
             A2.Add(new Weapon(Guid.NewGuid(), "Claw", 5, 5, 7));
 
