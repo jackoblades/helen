@@ -1,4 +1,5 @@
 using System;
+
 namespace Helen.Core
 {
     public class BattleActor
