@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using Helen.Core;
-using System.IO;
+﻿using Helen.Core;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Helen.Term
 {
     class Program
     {
-        static int PaddingLength = 75;
         static int MaxPartySize = 4;
 
         static Actor A1 = new Actor(new Guid(1, 1, 1, new byte[8]), "Helen", 50);
@@ -18,6 +17,9 @@ namespace Helen.Term
 
         static void Main(string[] args)
         {
+            Console.Clear();
+            Console.CursorVisible = false;
+
             // Add Equipment.
             A1.Add(new Weapon(Guid.NewGuid(), "Sword", 15, 10, 12));
             A1.Add(new Weapon(Guid.NewGuid(), "Bow", 7, 2, 5));
@@ -37,7 +39,7 @@ namespace Helen.Term
                 if (PartyB[0].CurrentTarget == null) PartyB[0].Select(PartyA[0]);
 
                 Render(PartyA[0], PartyB[0]);
-                
+
                 // Setup BA1.
                 if (PartyA[0].Wait == 0) PromptWeapon(PartyA[0]);
                 else if (PartyA[0].CurrentTarget == null) PromptTarget(PartyA[0]);
@@ -57,23 +59,23 @@ namespace Helen.Term
         static void Render(BattleActor BA1, BattleActor BA2)
         {
             Console.Clear();
-            Console.WriteLine($"|".PadRight(PaddingLength, '-'));
+            Terminal.WriteLine($"|", '-');
 
-            Console.WriteLine($"| {BA1.Name.PadRight(15, ' ')}{BA1.Health}/{BA1.HealthMax}");
+            Terminal.WriteLine($"| {BA1.Name.PadRight(15, ' ')}{BA1.Health}/{BA1.HealthMax}");
             if (BA1.CurrentWeapon != null)
-            Console.WriteLine($"| {BA1.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA1.CurrentWeapon.Effectiveness} Def:{BA1.CurrentWeapon.Defense} - Wait:{BA1.Wait} - {BA1.CurrentWeapon.PropertySummary}");
+                Terminal.WriteLine($"| {BA1.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA1.CurrentWeapon.Effectiveness} Def:{BA1.CurrentWeapon.Defense} - Wait:{BA1.Wait} - {BA1.CurrentWeapon.PropertySummary}");
             else // Pad out.
-            Console.WriteLine($"|".PadRight(PaddingLength, ' '));
+                Terminal.WriteLine($"|");
 
-            Console.WriteLine($"|");
+            Terminal.WriteLine($"|");
 
-            Console.WriteLine($"| {BA2.Name.PadRight(15, ' ')}{BA2.Health}/{BA2.HealthMax}");
+            Terminal.WriteLine($"| {BA2.Name.PadRight(15, ' ')}{BA2.Health}/{BA2.HealthMax}");
             if (BA2.CurrentWeapon != null)
-            Console.WriteLine($"| {BA2.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA2.CurrentWeapon.Effectiveness} Def:{BA2.CurrentWeapon.Defense} - Wait:{BA2.Wait} - {BA2.CurrentWeapon.PropertySummary}");
+                Terminal.WriteLine($"| {BA2.CurrentWeapon.Name.PadRight(15, ' ')}Eff:{BA2.CurrentWeapon.Effectiveness} Def:{BA2.CurrentWeapon.Defense} - Wait:{BA2.Wait} - {BA2.CurrentWeapon.PropertySummary}");
             else // Pad out.
-            Console.WriteLine($"|".PadRight(PaddingLength, ' '));
+                Terminal.WriteLine($"|");
 
-            Console.WriteLine($"|".PadRight(PaddingLength, '-'));
+            Terminal.WriteLine($"|", '-');
         }
 
         static void PromptWeapon(BattleActor actor)
@@ -81,7 +83,7 @@ namespace Helen.Term
             char response = ' ';
             Weapon weapon = null;
 
-            Console.WriteLine($"| Select Weapon: ".PadRight(PaddingLength, '-'));
+            Terminal.WriteLine($"| Select Weapon: ", '-');
 
             // Display offering of weapons.
             for (int i = 0; i < Actor.MaxWeaponCount; ++i)
@@ -94,15 +96,16 @@ namespace Helen.Term
                     Console.Write($" Def:{$"{weapon.Defense}".PadRight(4, ' ')}");
                     Console.Write($" Speed:{$"{weapon.Speed}".PadRight(4, ' ')}");
                     Console.Write($" {weapon.PropertySummary}");
-                    Console.WriteLine();
+                    Terminal.WriteLine();
                 }
             }
 
             do // Input loop.
             {
                 response = Console.ReadKey().KeyChar;
-                response = (response >= '0' || response <= '7') ? response : ' ';
+                response = (response >= '0' && response <= '7') ? response : ' ';
                 weapon = (int.TryParse(response.ToString(), out int index)) ? A1.Weapons[index] : null;
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             } while (weapon == null);
 
             actor.Select(weapon);
@@ -113,7 +116,7 @@ namespace Helen.Term
             char response = ' ';
             BattleActor target = null;
 
-            Console.WriteLine($"| Select Target: ".PadRight(PaddingLength, '-'));
+            Terminal.WriteLine($"| Select Target: ", '-');
 
             // Display offering of Party A members. (Allies).
             for (int i = 0; i < MaxPartySize; ++i)
@@ -121,7 +124,7 @@ namespace Helen.Term
                 target = PartyA[i];
                 if (target != null)
                 {
-                    Console.WriteLine($"| {i} - {target.Name.PadRight(PaddingLength, ' ')}");
+                    Terminal.WriteLine($"| {i} - {target.Name}");
                 }
             }
 
@@ -131,7 +134,7 @@ namespace Helen.Term
                 target = PartyB[i - MaxPartySize];
                 if (target != null)
                 {
-                    Console.WriteLine($"| {i} - {target.Name.PadRight(PaddingLength, ' ')}");
+                    Terminal.WriteLine($"| {i} - {target.Name}");
                 }
             }
 
@@ -143,6 +146,7 @@ namespace Helen.Term
                        : (index >= 0 && index <= 3) ? PartyA[index] 
                        : (index >= 4 && index <= 7) ? PartyB[index - MaxPartySize]
                        : null;
+                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             } while (target == null);
 
             actor.Select(target);
