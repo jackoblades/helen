@@ -1,5 +1,6 @@
 using Helen.Core;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -43,7 +44,7 @@ namespace Helen.Term
         public void Commence()
         {
             // Battle loop.
-            while (BattlePartyA[0].IsAlive && BattlePartyB[0].IsAlive)
+            while (Battle.State() == BattleState.Ongoing)
             {
                 // Setup BA2.
                 if (BattlePartyB[0].Wait == 0)             BattlePartyB[0].Select(PartyB[0].Weapons[0]);
@@ -64,9 +65,10 @@ namespace Helen.Term
         private void Conclude()
         {
             Console.Clear();
-            if      (!BattlePartyA[0].IsAlive && !BattlePartyB[0].IsAlive) Console.WriteLine("Somehow, it's a draw.");
-            else if (!BattlePartyA[0].IsAlive)                             Console.WriteLine("You lose, you suck.");
-            else if (!BattlePartyB[0].IsAlive)                             Console.WriteLine("You win, gg.");
+            BattleState state = Battle.State();
+            if      (state == BattleState.Draw)    Console.WriteLine("Somehow, it's a draw.");
+            else if (state == BattleState.Defeat)  Console.WriteLine("You lose, you suck.");
+            else if (state == BattleState.Victory) Console.WriteLine("You win, gg.");
         }
 
         private void Render(BattleActor BA1, BattleActor BA2)
@@ -115,10 +117,12 @@ namespace Helen.Term
 
             do // Input loop.
             {
+                var cursor = new Point(Console.CursorLeft, Console.CursorTop);
                 response = Console.ReadKey().KeyChar;
+                Console.SetCursorPosition(cursor.X, cursor.Y);
+
                 response = (response >= '0' && response <= '7') ? response : ' ';
                 weapon = (int.TryParse(response.ToString(), out int index)) ? PartyA[0].Weapons[index] : null;
-                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             } while (weapon == null);
 
             actor.Select(weapon);
@@ -153,13 +157,15 @@ namespace Helen.Term
 
             do // Input loop.
             {
+                var cursor = new Point(Console.CursorLeft, Console.CursorTop);
                 response = Console.ReadKey().KeyChar;
+                Console.SetCursorPosition(cursor.X, cursor.Y);
+
                 response = (response >= '0' || response <= '7') ? response : ' ';
                 target = !(int.TryParse(response.ToString(), out int index)) ? null
                        : (index >= 0 && index <= 3) ? BattlePartyA[index] 
                        : (index >= 4 && index <= 7) ? BattlePartyB[index - Battle.MaxPartySize]
                        : null;
-                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             } while (target == null);
 
             actor.Select(target);

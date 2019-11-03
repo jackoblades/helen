@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Helen.Core
 {
@@ -46,6 +47,23 @@ namespace Helen.Core
                 BattlePartyA[i] = PartyA[i]?.Battle();
                 BattlePartyB[i] = PartyB[i]?.Battle();
             }
+        }
+
+        public BattleState State()
+        {
+            var state = BattleState.None;
+
+            if (BattlePartyA != null && BattlePartyB != null)
+            {
+                bool partyA = BattlePartyA.Any(x => x.IsAlive);
+                bool partyB = BattlePartyB.Any(x => x.IsAlive);
+                state = ( partyA &&  partyB) ? BattleState.Ongoing
+                      : ( partyA && !partyB) ? BattleState.Victory
+                      : (!partyA &&  partyB) ? BattleState.Defeat
+                      :                        BattleState.Draw;
+            }
+
+            return state;
         }
 
         #endregion
