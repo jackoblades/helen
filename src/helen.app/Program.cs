@@ -14,17 +14,20 @@ namespace helen.app
             var window = new RenderWindow(mode, "Helen");
             window.Closed += (x, y) => window.Close();
             window.KeyPressed += OnKeyPressed;
+            window.SetVerticalSyncEnabled(true);
 
             var texture = new Texture("res/gfx/title.png");
             var sprite = new Sprite(texture);
+            byte a = 0;
 
             Music music = new Music("res/sfx/fts8b.wav");
             music.Play();
 
             while (window.IsOpen)
             {
-                //while (window.Po)
-                // Process events.
+                if (a < 255) a++;
+                sprite.Color = new Color(255, 255, 255, a);
+
                 window.DispatchEvents();
                 window.Clear(Color.Black);
                 window.Draw(sprite);
