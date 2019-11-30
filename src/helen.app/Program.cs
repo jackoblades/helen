@@ -11,14 +11,36 @@ namespace helen.app
         static void Main(string[] args)
         {
             var mode = new VideoMode(800, 600);
-            var window = new RenderWindow(mode, "Helen");
+            var window = new RenderWindow(mode, "YeomanSaga");
             window.Closed += (x, y) => window.Close();
             window.KeyPressed += OnKeyPressed;
             window.SetVerticalSyncEnabled(true);
 
-            var texture = new Texture("res/gfx/title.png");
-            var sprite = new Sprite(texture);
+            //var texture = new Texture("res/gfx/title.png");
+            //var sprite = new Sprite(texture);
+
+            var FontTitle = new Font("res/ttf/Ruritania/Ruritania.ttf");
+            var FontBody  = new Font("res/ttf/Penshurst/penshurs.ttf");
+            var FontCredit  = new Font("res/ttf/SourceSerifPro/SourceSerifPro-Regular.ttf");
+
+            var title = new Text("YeomanSaga", FontTitle, 100);
+            title.Position = new Vector2f(40f, 100f);
+
+            var option1 = new Text("New", FontBody, 40);
+            var option2 = new Text("Load", FontBody, 40);
+            var option3 = new Text("Options", FontBody, 40);
+            var option4 = new Text("Quit", FontBody, 40);
+            option1.Position = new Vector2f(300f, 300f);
+            option2.Position = new Vector2f(300f, 350f);
+            option3.Position = new Vector2f(300f, 400f);
+            option4.Position = new Vector2f(300f, 450f);
+
+            var credit = new Text(@"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini", FontCredit, 18);
+            credit.Position = new Vector2f(20f, 700f);
+
             byte a = 0;
+            byte b = 0;
+            byte c = 0;
 
             Music music = new Music("res/sfx/fts8b.wav");
             music.Play();
@@ -26,11 +48,23 @@ namespace helen.app
             while (window.IsOpen)
             {
                 if (a < 255) a++;
-                sprite.Color = new Color(255, 255, 255, a);
+                if (a >= 100 && b < 255) b++;
+                if (b >= 100 && c < 255) c++;
+                title.FillColor = new Color(255, 255, 255, a);
+                option1.FillColor = new Color(255, 255, 255, b);
+                option2.FillColor = new Color(255, 255, 255, b);
+                option3.FillColor = new Color(255, 255, 255, b);
+                option4.FillColor = new Color(255, 255, 255, b);
+                credit.FillColor = new Color(255, 255, 255, c);
 
                 window.DispatchEvents();
                 window.Clear(Color.Black);
-                window.Draw(sprite);
+                window.Draw(title);
+                window.Draw(option1);
+                window.Draw(option2);
+                window.Draw(option3);
+                window.Draw(option4);
+                window.Draw(credit);
                 window.Display();
             }
         }
