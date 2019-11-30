@@ -4,7 +4,7 @@ using SFML.System;
 using SFML.Window;
 using System;
 
-namespace helen.app
+namespace Helen.App
 {
     class Program
     {
@@ -19,23 +19,21 @@ namespace helen.app
             //var texture = new Texture("res/gfx/title.png");
             //var sprite = new Sprite(texture);
 
-            var FontTitle = new Font("res/ttf/Ruritania/Ruritania.ttf");
-            var FontBody  = new Font("res/ttf/Penshurst/penshurs.ttf");
-            var FontCredit  = new Font("res/ttf/SourceSerifPro/SourceSerifPro-Regular.ttf");
+            Fonts.Init();
 
-            var title = new Text("YeomanSaga", FontTitle, 100);
+            var title = new Text("YeomanSaga", Fonts.FontTitle, 100);
             title.Position = new Vector2f(40f, 100f);
 
-            var option1 = new Text("New", FontBody, 40);
-            var option2 = new Text("Load", FontBody, 40);
-            var option3 = new Text("Options", FontBody, 40);
-            var option4 = new Text("Quit", FontBody, 40);
+            var option1 = new Text("New", Fonts.FontBody, 40);
+            var option2 = new Text("Load", Fonts.FontBody, 40);
+            var option3 = new Text("Options", Fonts.FontBody, 40);
+            var option4 = new Text("Quit", Fonts.FontBody, 40);
             option1.Position = new Vector2f(300f, 300f);
             option2.Position = new Vector2f(300f, 350f);
             option3.Position = new Vector2f(300f, 400f);
             option4.Position = new Vector2f(300f, 450f);
 
-            var credit = new Text(@"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini", FontCredit, 18);
+            var credit = new Text(@"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini", Fonts.FontCredit, 18);
             credit.Position = new Vector2f(20f, 700f);
 
             byte a = 0;
