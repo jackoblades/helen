@@ -1,3 +1,5 @@
+using SFML.Graphics;
+
 namespace Helen.App
 {
     public static class Fonts
