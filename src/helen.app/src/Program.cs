@@ -1,4 +1,5 @@
-﻿using SFML.Audio;
+﻿using Helen.App.Extensions;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -32,6 +33,14 @@ namespace Helen.App
             option2.Position = new Vector2f(300f, 350f);
             option3.Position = new Vector2f(300f, 400f);
             option4.Position = new Vector2f(300f, 450f);
+            var optionDot1 = new Text("", Fonts.FontTitle, 40);
+            var optionDot2 = new Text("", Fonts.FontTitle, 40);
+            var optionDot3 = new Text("", Fonts.FontTitle, 40);
+            var optionDot4 = new Text("", Fonts.FontTitle, 40);
+            optionDot1.Position = new Vector2f(250f, 300f);
+            optionDot2.Position = new Vector2f(250f, 350f);
+            optionDot3.Position = new Vector2f(250f, 400f);
+            optionDot4.Position = new Vector2f(250f, 450f);
 
             var credit = new Text(@"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini", Fonts.FontCredit, 18);
             credit.Position = new Vector2f(20f, 700f);
@@ -53,7 +62,17 @@ namespace Helen.App
                 option2.FillColor = new Color(255, 255, 255, b);
                 option3.FillColor = new Color(255, 255, 255, b);
                 option4.FillColor = new Color(255, 255, 255, b);
+                optionDot1.FillColor = new Color(255, 255, 255, b);
+                optionDot2.FillColor = new Color(255, 255, 255, b);
+                optionDot3.FillColor = new Color(255, 255, 255, b);
+                optionDot4.FillColor = new Color(255, 255, 255, b);
                 credit.FillColor = new Color(255, 255, 255, c);
+
+                var mousePosition = Mouse.GetPosition(window);
+                optionDot1.DisplayedString = option1.Contains(mousePosition) ? "o" : "";
+                optionDot2.DisplayedString = option2.Contains(mousePosition) ? "o" : "";
+                optionDot3.DisplayedString = option3.Contains(mousePosition) ? "o" : "";
+                optionDot4.DisplayedString = option4.Contains(mousePosition) ? "o" : "";
 
                 window.DispatchEvents();
                 window.Clear(Color.Black);
@@ -62,6 +81,10 @@ namespace Helen.App
                 window.Draw(option2);
                 window.Draw(option3);
                 window.Draw(option4);
+                window.Draw(optionDot1);
+                window.Draw(optionDot2);
+                window.Draw(optionDot3);
+                window.Draw(optionDot4);
                 window.Draw(credit);
                 window.Display();
             }
