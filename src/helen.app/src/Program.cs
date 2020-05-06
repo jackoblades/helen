@@ -1,5 +1,6 @@
 ﻿using Helen.App.Extensions;
 using Helen.App.Scenes;
+using Helen.App.Services;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -8,29 +9,60 @@ using System;
 
 namespace Helen.App
 {
-    class Program
+    public class Program
     {
+        #region Properties
+
+        public static Scene CurrentScene { get; set; }
+
+        private static RenderWindow Window;
+
+        private static object _lock = new object();
+
+        #endregion
+
         static void Main(string[] args)
         {
             var mode = new VideoMode(800, 600);
-            var window = new RenderWindow(mode, "YeomanSaga");
-            window.Closed += (x, y) => window.Close();
-            window.SetVerticalSyncEnabled(true);
+            Window = new RenderWindow(mode, "YeomanSaga");
+            Window.Closed += (x, y) => Close();
+            Window.SetVerticalSyncEnabled(true);
+
+            // Services.
+            SceneService.Init(Window);
 
             //var texture = new Texture("res/gfx/title.png");
             //var sprite = new Sprite(texture);
 
             Fonts.Init();
-            Scene currentScene = new TitleScene(window).Open();
+            Navigate(SceneService.TitleScene);
 
-            while (window.IsOpen)
+            while (Window.IsOpen)
             {
-                currentScene.Progress();
-                window.DispatchEvents();
-                window.Clear(Color.Black);
-                window.Draw(currentScene);
-                window.Display();
+                lock (_lock)
+                {
+                    CurrentScene.Progress();
+                    Window.DispatchEvents();
+                    Window.Clear(Color.Black);
+                    Window.Draw(CurrentScene);
+                    Window.Display();
+                }
             }
+        }
+
+        public static void Navigate(Scene scene)
+        {
+            lock (_lock)
+            {
+                CurrentScene?.Close();
+                CurrentScene = scene.Open();
+            }
+        }
+
+        public static void Close()
+        {
+            CurrentScene?.Music?.Stop();
+            Window.Close();
         }
 
         private static SoundBuffer GenerateSineWave(double frequency, double volume, int seconds)

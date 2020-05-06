@@ -10,7 +10,7 @@ namespace Helen.App.Scenes
 
         protected RenderWindow _window;
 
-        protected Music Music;
+        public Music Music;
 
         #endregion
 
@@ -60,7 +60,6 @@ namespace Helen.App.Scenes
         #region Event Handlers
 
         protected abstract void OnKeyPressed(object sender, KeyEventArgs e);
-
         protected abstract void OnMouseButtonPressed(object sender, MouseButtonEventArgs e);
         protected abstract void OnMouseButtonReleased(object sender, MouseButtonEventArgs e);
 

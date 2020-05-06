@@ -1,4 +1,5 @@
 using Helen.App.Extensions;
+using Helen.App.Services;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -75,10 +76,10 @@ namespace Helen.App.Scenes
             Title = new Text("YeomanSaga", Fonts.FontTitle, 100);
             Title.Position = new Vector2f(40f, 100f);
 
-            Option1 = new Text("New",     Fonts.FontBody, 40);
-            Option2 = new Text("Load",    Fonts.FontBody, 40);
-            Option3 = new Text("Options", Fonts.FontBody, 40);
-            Option4 = new Text("Quit",    Fonts.FontBody, 40);
+            Option1 = new Text("New",      Fonts.FontBody, 40);
+            Option2 = new Text("Load",     Fonts.FontBody, 40);
+            Option3 = new Text("Settings", Fonts.FontBody, 40);
+            Option4 = new Text("Quit",     Fonts.FontBody, 40);
             Option1.Position = new Vector2f(300f, 300f);
             Option2.Position = new Vector2f(300f, 350f);
             Option3.Position = new Vector2f(300f, 400f);
@@ -99,7 +100,7 @@ namespace Helen.App.Scenes
         public override Scene Open()
         {
             base.Open();
-            Music.Play();
+            if (Music.Status != SoundStatus.Playing) Music.Play();
             return this;
         }
 
@@ -148,7 +149,7 @@ namespace Helen.App.Scenes
             var window = sender as Window;
             switch (e.Code)
             {
-                case Keyboard.Key.Escape: window.Close();
+                case Keyboard.Key.Escape: Program.Close();
                     break;
             }
         }
@@ -222,10 +223,11 @@ namespace Helen.App.Scenes
             }
             else if (Option3.Contains(e.X, e.Y))
             {
+                Program.Navigate(SceneService.SettingsScene);
             }
             else if (Option4.Contains(e.X, e.Y))
             {
-                _window.Close();
+                Program.Close();
             }
         }
 
