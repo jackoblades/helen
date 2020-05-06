@@ -23,9 +23,6 @@ namespace Helen.App
             Fonts.Init();
             Scene currentScene = new TitleScene(window).Open();
 
-            Music music = new Music("res/sfx/fts8b.wav");
-            music.Play();
-
             while (window.IsOpen)
             {
                 currentScene.Progress();

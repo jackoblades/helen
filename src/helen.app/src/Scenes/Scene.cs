@@ -1,3 +1,4 @@
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -8,6 +9,8 @@ namespace Helen.App.Scenes
         #region Private Members
 
         protected RenderWindow _window;
+
+        protected Music Music;
 
         #endregion
 
