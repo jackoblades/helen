@@ -25,5 +25,12 @@ namespace Helen.App.Extensions
         {
             return text.GetGlobalBounds().Contains(x, y);
         }
+
+        public static void Indicate(this Text indicator, Text text, Vector2i position)
+        {
+            indicator.DisplayedString = text.Contains(position)
+                                      ? (indicator.DisplayedString == "x")
+                                      ? "x" : "o" : string.Empty;
+        }
     }
 }

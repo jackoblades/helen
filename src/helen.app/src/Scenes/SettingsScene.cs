@@ -79,9 +79,7 @@ namespace Helen.App.Scenes
         public override void Progress()
         {
             var mousePosition = Mouse.GetPosition(_window);
-            BackDot.DisplayedString = Back.Contains(mousePosition)
-                                    ? (BackDot.DisplayedString == "x")
-                                    ? "x" : "o" : "";
+            BackDot.Indicate(Back, mousePosition);
         }
 
         #endregion
@@ -102,12 +100,9 @@ namespace Helen.App.Scenes
         {
             switch (e.Button)
             {
-                case Mouse.Button.Left:   OnMouseButtonPressed(e);
-                    break;
-                case Mouse.Button.Right:  OnMouseButtonPressed(e);
-                    break;
-                case Mouse.Button.Middle: OnMouseButtonPressed(e);
-                    break;
+                case Mouse.Button.Left:   OnMouseButtonPressed(e); break;
+                case Mouse.Button.Right:  OnMouseButtonPressed(e); break;
+                case Mouse.Button.Middle: OnMouseButtonPressed(e); break;
             }
         }
 
@@ -124,12 +119,9 @@ namespace Helen.App.Scenes
         {
             switch (e.Button)
             {
-                case Mouse.Button.Left:   OnMouseButtonReleased(e);
-                    break;
-                case Mouse.Button.Right:  OnMouseButtonReleased(e);
-                    break;
-                case Mouse.Button.Middle: OnMouseButtonReleased(e);
-                    break;
+                case Mouse.Button.Left:   OnMouseButtonReleased(e); break;
+                case Mouse.Button.Right:  OnMouseButtonReleased(e); break;
+                case Mouse.Button.Middle: OnMouseButtonReleased(e); break;
             }
         }
 

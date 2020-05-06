@@ -126,18 +126,10 @@ namespace Helen.App.Scenes
             Credit.FillColor = new Color(255, 255, 255, c);
 
             var mousePosition = Mouse.GetPosition(_window);
-            OptionDot1.DisplayedString = Option1.Contains(mousePosition)
-                                       ? (OptionDot1.DisplayedString == "x")
-                                       ? "x" : "o" : "";
-            OptionDot2.DisplayedString = Option2.Contains(mousePosition)
-                                       ? (OptionDot2.DisplayedString == "x")
-                                       ? "x" : "o" : "";
-            OptionDot3.DisplayedString = Option3.Contains(mousePosition)
-                                       ? (OptionDot3.DisplayedString == "x")
-                                       ? "x" : "o" : "";
-            OptionDot4.DisplayedString = Option4.Contains(mousePosition)
-                                       ? (OptionDot4.DisplayedString == "x")
-                                       ? "x" : "o" : "";
+            OptionDot1.Indicate(Option1, mousePosition);
+            OptionDot2.Indicate(Option2, mousePosition);
+            OptionDot3.Indicate(Option3, mousePosition);
+            OptionDot4.Indicate(Option4, mousePosition);
         }
 
         #endregion
@@ -158,12 +150,9 @@ namespace Helen.App.Scenes
         {
             switch (e.Button)
             {
-                case Mouse.Button.Left:   OnMouseButtonPressed(e);
-                    break;
-                case Mouse.Button.Right:  OnMouseButtonPressed(e);
-                    break;
-                case Mouse.Button.Middle: OnMouseButtonPressed(e);
-                    break;
+                case Mouse.Button.Left:   OnMouseButtonPressed(e); break;
+                case Mouse.Button.Right:  OnMouseButtonPressed(e); break;
+                case Mouse.Button.Middle: OnMouseButtonPressed(e); break;
             }
         }
 
@@ -195,12 +184,9 @@ namespace Helen.App.Scenes
         {
             switch (e.Button)
             {
-                case Mouse.Button.Left:   OnMouseButtonReleased(e);
-                    break;
-                case Mouse.Button.Right:  OnMouseButtonReleased(e);
-                    break;
-                case Mouse.Button.Middle: OnMouseButtonReleased(e);
-                    break;
+                case Mouse.Button.Left:   OnMouseButtonReleased(e); break;
+                case Mouse.Button.Right:  OnMouseButtonReleased(e); break;
+                case Mouse.Button.Middle: OnMouseButtonReleased(e); break;
             }
         }
 
