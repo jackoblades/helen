@@ -63,7 +63,7 @@ namespace Helen.App.Scenes
             BackDot.Position = new Vector2f(250f, 450f);
 
             Credit = new Text(@"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini", Fonts.FontCredit, 18);
-            Credit.Position = new Vector2f(20f, 700f);
+            Credit.Position = new Vector2f(20f, 575f);
         }
 
         public override Scene Open()
