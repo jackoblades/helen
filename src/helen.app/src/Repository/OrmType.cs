@@ -11,7 +11,7 @@ namespace Helen.App.Repository
 
     public static class OrmTypeExtensions
     {
-        public static string ToString(this OrmType type)
+        public static string ToSql(this OrmType type)
         {
             return (type == OrmType.Int)  ? "INTEGER"
                  : (type == OrmType.Real) ? "REAL"

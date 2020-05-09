@@ -38,7 +38,7 @@ namespace Helen.App.Repository
         public TableFactory Column(string column, OrmType type, bool isNull)
         {
             string nullClause = isNull ? "NULL" : "NOT NULL";
-            _sql.Append($"\"{column}\" {type.ToString()} {nullClause}, ");
+            _sql.Append($"\"{column}\" {type.ToSql()} {nullClause}, ");
             return this;
         }
 
