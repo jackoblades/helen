@@ -49,7 +49,6 @@ namespace Helen.App.Repository
         {
             _sql.Append(")");
             _sql.Replace(", )", ")");
-            System.Console.WriteLine(_sql.ToString());
             return _sql.ToString();
         }
 

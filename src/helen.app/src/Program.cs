@@ -15,6 +15,10 @@ namespace Helen.App
     {
         #region Properties
 
+        public static readonly string Version = "alpha";
+
+        public static readonly string Footer = @"https://github.com/jackoblades 🄯 2019 - 2020 Anno Domini";
+
         public static Scene CurrentScene { get; set; }
 
         private static RenderWindow Window;
