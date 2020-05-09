@@ -26,7 +26,11 @@ namespace Helen.App.Repository
             using (var db = await GetDatabaseAsync())
             {
                 // Create tables.
-                ExecuteNonQueryAsync(db, $"CREATE TABLE IF NOT EXISTS \"{nameof(Settings)}\" (\"Id\" BLOB NOT NULL CONSTRAINT \"PK_{nameof(Settings)}\" PRIMARY KEY, \"Preferences\" INT NOT NULL, \"MusicVolume\" INT NOT NULL)");
+                ExecuteNonQueryAsync(db, new TableFactory(nameof(Settings))
+                                        .Id()
+                                        .Column(nameof(Settings.Preferences), OrmType.Int, false)
+                                        .Column(nameof(Settings.MusicVolume), OrmType.Int, false)
+                                        .Build());
             }
         }
 
