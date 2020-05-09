@@ -1,5 +1,6 @@
 ﻿using Helen.App.Extensions;
 using Helen.App.Models;
+using Helen.App.Repository;
 using Helen.App.Scenes;
 using Helen.App.Services;
 using SFML.Audio;
@@ -24,12 +25,13 @@ namespace Helen.App
 
         static void Main(string[] args)
         {
-            Options.Init();
+            Orm.InitAsync().Wait();
+            Settings.Init();
 
             var mode = new VideoMode(800, 600);
             Window = new RenderWindow(mode, "YeomanSaga");
             Window.Closed += (x, y) => Close();
-            Window.SetVerticalSyncEnabled(Options.Instance.Vsync);
+            Window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
 
             // Services.
             SceneService.Init(Window);
