@@ -3,6 +3,7 @@ using Helen.App.Models;
 using Helen.App.Repository;
 using Helen.App.Scenes;
 using Helen.App.Services;
+using Helen.App.Textual;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;

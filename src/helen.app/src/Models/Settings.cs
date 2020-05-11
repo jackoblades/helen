@@ -67,6 +67,11 @@ namespace Helen.App.Models
             Instance = Load() ?? Generate();
         }
 
+        public void Toggle(Preferences pref)
+        {
+            Preferences = Preferences.Toggle(pref);
+        }
+
         private static Settings Load()
         {
             return null;

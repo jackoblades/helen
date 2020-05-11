@@ -1,5 +1,6 @@
 using Helen.App.Extensions;
 using Helen.App.Services;
+using Helen.App.Textual;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;

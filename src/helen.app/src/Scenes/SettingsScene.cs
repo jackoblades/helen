@@ -1,5 +1,7 @@
 using Helen.App.Extensions;
+using Helen.App.Models;
 using Helen.App.Services;
+using Helen.App.Textual;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -14,6 +16,9 @@ namespace Helen.App.Scenes
         #region Entities
 
         protected Text Title;
+
+        protected Text VsyncIndicator;
+        protected Text VsyncDescription;
 
         protected Text Back;
         protected Text BackDot;
@@ -42,6 +47,8 @@ namespace Helen.App.Scenes
             _drawables = new Drawable[]
             {
                 Title,
+                VsyncIndicator,
+                VsyncDescription,
                 Back,
                 BackDot,
                 Credit,
@@ -56,6 +63,11 @@ namespace Helen.App.Scenes
         {
             Title = new Text("Settings", Fonts.FontTitle, 60);
             Title.Position = new Vector2f(100f, 50f);
+
+            VsyncIndicator = new Text((Settings.Instance.Vsync) ? Glyphs.ToggleOn : Glyphs.ToggleOff, Fonts.FontUnicode, 40);
+            VsyncIndicator.Position = new Vector2f(250f, 300f);
+            VsyncDescription = new Text("VSync", Fonts.FontBody, 40);
+            VsyncDescription.Position = new Vector2f(300f, 300f);
 
             Back = new Text("Back", Fonts.FontBody, 40);
             Back.Position = new Vector2f(300f, 450f);
@@ -108,6 +120,11 @@ namespace Helen.App.Scenes
 
         private void OnMouseButtonPressed(MouseButtonEventArgs e)
         {
+            if (VsyncDescription.Contains(e.X, e.Y)
+            ||  VsyncIndicator.Contains(e.X, e.Y))
+            {
+                VsyncDescription.Style = Text.Styles.Underlined;
+            }
             if (Back.Contains(e.X, e.Y))
             {
                 Back.Style = Text.Styles.Underlined;
@@ -127,9 +144,17 @@ namespace Helen.App.Scenes
 
         private void OnMouseButtonReleased(MouseButtonEventArgs e)
         {
-            Back.Style = Text.Styles.Regular;
+            VsyncDescription.Style = Text.Styles.Regular;
+            Back.Style             = Text.Styles.Regular;
             BackDot.DisplayedString = "";
 
+            if (VsyncDescription.Contains(e.X, e.Y)
+            ||  VsyncIndicator.Contains(e.X, e.Y))
+            {
+                Settings.Instance.Toggle(Preferences.Vsync);
+                _window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
+                VsyncIndicator.DisplayedString = (Settings.Instance.Vsync) ? Glyphs.ToggleOn : Glyphs.ToggleOff;
+            }
             if (Back.Contains(e.X, e.Y))
             {
                 Program.Navigate(SceneService.TitleScene);
