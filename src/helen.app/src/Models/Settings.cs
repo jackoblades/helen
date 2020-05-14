@@ -16,6 +16,11 @@ namespace Helen.App.Models
         /// </summary>
         public static Settings Instance { get; set; }
 
+        /// <summary>
+        /// Static backup.
+        /// </summary>
+        public static Settings Backup { get; set; }
+
         #endregion
 
         #region Member Variables
@@ -46,7 +51,7 @@ namespace Helen.App.Models
 
         /// <summary>
         /// Volume at which the music plays.
-        /// 0 <= <see cref=MusicVolumeSafe/> <= 1.
+        /// 0 <= <see cref=MusicVolumeSafe/> <= 100.
         /// </summary>
         public int MusicVolumeSafe => MusicVolume.WithBounds(0, 100);
 
@@ -58,6 +63,13 @@ namespace Helen.App.Models
 
         public Settings()
         {
+        }
+
+        public Settings(Settings settings)
+        {
+            Id          = settings.Id;
+            Preferences = settings.Preferences;
+            MusicVolume = settings.MusicVolume;
         }
 
         #endregion

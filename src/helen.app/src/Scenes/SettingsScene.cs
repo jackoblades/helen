@@ -89,7 +89,10 @@ namespace Helen.App.Scenes
 
         public override Scene Open()
         {
-            return base.Open();
+            base.Open();
+            Settings.Backup = new Settings(Settings.Instance);
+            Vsync.DisplayedString = VsyncText;
+            return this;
         }
 
         public override void Close()
@@ -173,8 +176,15 @@ namespace Helen.App.Scenes
             }
             if (Back.Contains(e.X, e.Y))
             {
+                ResetSettings();
                 Program.Navigate(SceneService.TitleScene);
             }
+        }
+
+        private void ResetSettings()
+        {
+            Settings.Instance = Settings.Backup;
+            _window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
         }
 
         #endregion
