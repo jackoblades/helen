@@ -1,11 +1,13 @@
 using Helen.App.Extensions;
 using Helen.App.Models;
+using Helen.App.Repository.Charters;
 using Helen.App.Services;
 using Helen.App.Textual;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System.Threading.Tasks;
 
 namespace Helen.App.Scenes
 {
@@ -19,6 +21,9 @@ namespace Helen.App.Scenes
 
         protected Text VsyncIndicator;
         protected Text VsyncDescription;
+
+        protected Text Save;
+        protected Text SaveDot;
 
         protected Text Back;
         protected Text BackDot;
@@ -49,6 +54,8 @@ namespace Helen.App.Scenes
                 Title,
                 VsyncIndicator,
                 VsyncDescription,
+                Save,
+                SaveDot,
                 Back,
                 BackDot,
                 Credit,
@@ -69,10 +76,15 @@ namespace Helen.App.Scenes
             VsyncDescription = new Text("VSync", Fonts.FontBody, 40);
             VsyncDescription.Position = new Vector2f(300f, 300f);
 
+            Save = new Text("Save", Fonts.FontBody, 40);
+            Save.Position = new Vector2f(400f, 450f);
+            SaveDot = new Text("", Fonts.FontTitle, 40);
+            SaveDot.Position = new Vector2f(350f, 450f);
+
             Back = new Text("Back", Fonts.FontBody, 40);
-            Back.Position = new Vector2f(300f, 450f);
+            Back.Position = new Vector2f(200f, 450f);
             BackDot = new Text("", Fonts.FontTitle, 40);
-            BackDot.Position = new Vector2f(250f, 450f);
+            BackDot.Position = new Vector2f(150f, 450f);
 
             Credit = new Text($"{Program.Version} - {Program.Footer}", Fonts.FontCredit, 18);
             Credit.Position = new Vector2f(20f, 575f);
@@ -91,6 +103,7 @@ namespace Helen.App.Scenes
         public override void Progress()
         {
             var mousePosition = Mouse.GetPosition(_window);
+            SaveDot.Indicate(Save, mousePosition);
             BackDot.Indicate(Back, mousePosition);
         }
 
@@ -125,6 +138,11 @@ namespace Helen.App.Scenes
             {
                 VsyncDescription.Style = Text.Styles.Underlined;
             }
+            if (Save.Contains(e.X, e.Y))
+            {
+                Save.Style = Text.Styles.Underlined;
+                SaveDot.DisplayedString = "x";
+            }
             if (Back.Contains(e.X, e.Y))
             {
                 Back.Style = Text.Styles.Underlined;
@@ -132,20 +150,22 @@ namespace Helen.App.Scenes
             }
         }
 
-        protected override void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
+        protected override async void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             switch (e.Button)
             {
-                case Mouse.Button.Left:   OnMouseButtonReleased(e); break;
-                case Mouse.Button.Right:  OnMouseButtonReleased(e); break;
-                case Mouse.Button.Middle: OnMouseButtonReleased(e); break;
+                case Mouse.Button.Left:   await OnMouseButtonReleased(e); break;
+                case Mouse.Button.Right:  await OnMouseButtonReleased(e); break;
+                case Mouse.Button.Middle: await OnMouseButtonReleased(e); break;
             }
         }
 
-        private void OnMouseButtonReleased(MouseButtonEventArgs e)
+        private async Task OnMouseButtonReleased(MouseButtonEventArgs e)
         {
             VsyncDescription.Style = Text.Styles.Regular;
+            Save.Style             = Text.Styles.Regular;
             Back.Style             = Text.Styles.Regular;
+            SaveDot.DisplayedString = "";
             BackDot.DisplayedString = "";
 
             if (VsyncDescription.Contains(e.X, e.Y)
@@ -154,6 +174,10 @@ namespace Helen.App.Scenes
                 Settings.Instance.Toggle(Preferences.Vsync);
                 _window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
                 VsyncIndicator.DisplayedString = (Settings.Instance.Vsync) ? Glyphs.ToggleOn : Glyphs.ToggleOff;
+            }
+            if (Save.Contains(e.X, e.Y))
+            {
+                await Settings.Save();
             }
             if (Back.Contains(e.X, e.Y))
             {

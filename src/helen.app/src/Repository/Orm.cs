@@ -1,3 +1,4 @@
+using Helen.App.Extensions;
 using Helen.App.Models;
 using Microsoft.Data.Sqlite;
 using System;
@@ -26,11 +27,11 @@ namespace Helen.App.Repository
             using (var db = await GetDatabaseAsync())
             {
                 // Create tables.
-                ExecuteNonQueryAsync(db, new TableFactory(nameof(Settings))
-                                        .Id()
-                                        .Column(nameof(Settings.Preferences), OrmType.Int, false)
-                                        .Column(nameof(Settings.MusicVolume), OrmType.Int, false)
-                                        .Build());
+                await db.ExecuteNonQueryAsync(new TableFactory(nameof(Settings))
+                            .Id()
+                            .Column(nameof(Settings.Preferences), OrmType.Int, false)
+                            .Column(nameof(Settings.MusicVolume), OrmType.Int, false)
+                            .Build());
             }
         }
 
@@ -46,33 +47,17 @@ namespace Helen.App.Repository
             // If this is a newly created DB, add in the current UserVersion.
             if (isNew)
             {
-                await ExecuteScalarAsync(db, $"PRAGMA user_version={UserVersion}");
+                await db.ExecuteScalarAsync($"PRAGMA user_version={UserVersion}");
             }
 
             return db;
-        }
-
-        private static async Task ExecuteScalarAsync(SqliteConnection db, string sql)
-        {
-            using (var command = new SqliteCommand(sql, db))
-            {
-                await command.ExecuteScalarAsync();
-            }
-        }
-
-        private static async void ExecuteNonQueryAsync(SqliteConnection db, string sql)
-        {
-            using (var command = new SqliteCommand(sql, db))
-            {
-                await command.ExecuteNonQueryAsync();
-            }
         }
 
         #region Mappers
 
         public static string MapString(object obj) => (obj != DBNull.Value) ? obj as string : null;
 
-        public static Guid MapGuid(object obj) => (obj != DBNull.Value) ? new Guid((byte[])obj) : Guid.Empty;
+        public static Guid MapGuid(object obj) => (obj != DBNull.Value) ? new Guid((string)obj) : Guid.Empty;
 
         public static DateTimeOffset MapDateTimeOffset(object obj) => DateTimeOffset.TryParse(obj as string, out DateTimeOffset result) ? result : default;
 

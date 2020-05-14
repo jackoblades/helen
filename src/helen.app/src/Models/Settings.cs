@@ -1,5 +1,7 @@
 using Helen.App.Extensions;
+using Helen.App.Repository.Charters;
 using System;
+using System.Threading.Tasks;
 
 namespace Helen.App.Models
 {
@@ -64,7 +66,7 @@ namespace Helen.App.Models
 
         public static void Init()
         {
-            Instance = Load() ?? Generate();
+            Instance = Load().Result ?? Generate();
         }
 
         public void Toggle(Preferences pref)
@@ -72,9 +74,14 @@ namespace Helen.App.Models
             Preferences = Preferences.Toggle(pref);
         }
 
-        private static Settings Load()
+        private static async Task<Settings> Load()
         {
-            return null;
+            return await SettingsCharter.ReadAsync();
+        }
+
+        public static async Task Save()
+        {
+            await SettingsCharter.UpsertAsync(Instance);
         }
 
         private static Settings Generate()
