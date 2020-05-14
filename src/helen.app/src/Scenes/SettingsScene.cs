@@ -19,8 +19,8 @@ namespace Helen.App.Scenes
 
         protected Text Title;
 
-        protected Text VsyncIndicator;
-        protected Text VsyncDescription;
+        protected Text Vsync;
+        private string VsyncText => (Settings.Instance.Vsync) ? "VSync:  On" : "VSync:  Off";
 
         protected Text Save;
         protected Text SaveDot;
@@ -52,8 +52,7 @@ namespace Helen.App.Scenes
             _drawables = new Drawable[]
             {
                 Title,
-                VsyncIndicator,
-                VsyncDescription,
+                Vsync,
                 Save,
                 SaveDot,
                 Back,
@@ -71,20 +70,18 @@ namespace Helen.App.Scenes
             Title = new Text("Settings", Fonts.FontTitle, 60);
             Title.Position = new Vector2f(100f, 50f);
 
-            VsyncIndicator = new Text((Settings.Instance.Vsync) ? Glyphs.ToggleOn : Glyphs.ToggleOff, Fonts.FontUnicode, 40);
-            VsyncIndicator.Position = new Vector2f(250f, 300f);
-            VsyncDescription = new Text("VSync", Fonts.FontBody, 40);
-            VsyncDescription.Position = new Vector2f(300f, 300f);
+            Vsync = new Text(VsyncText, Fonts.FontBody, 40);
+            Vsync.Position = new Vector2f(150f, 300f);
 
-            Save = new Text("Save", Fonts.FontBody, 40);
+            Save = new Text("Save & Exit", Fonts.FontBody, 40);
             Save.Position = new Vector2f(400f, 450f);
             SaveDot = new Text("", Fonts.FontTitle, 40);
             SaveDot.Position = new Vector2f(350f, 450f);
 
-            Back = new Text("Back", Fonts.FontBody, 40);
-            Back.Position = new Vector2f(200f, 450f);
+            Back = new Text("Cancel", Fonts.FontBody, 40);
+            Back.Position = new Vector2f(100f, 450f);
             BackDot = new Text("", Fonts.FontTitle, 40);
-            BackDot.Position = new Vector2f(150f, 450f);
+            BackDot.Position = new Vector2f(50f, 450f);
 
             Credit = new Text($"{Program.Version} - {Program.Footer}", Fonts.FontCredit, 18);
             Credit.Position = new Vector2f(20f, 575f);
@@ -105,6 +102,7 @@ namespace Helen.App.Scenes
             var mousePosition = Mouse.GetPosition(_window);
             SaveDot.Indicate(Save, mousePosition);
             BackDot.Indicate(Back, mousePosition);
+            Vsync.Indicate(mousePosition);
         }
 
         #endregion
@@ -133,11 +131,6 @@ namespace Helen.App.Scenes
 
         private void OnMouseButtonPressed(MouseButtonEventArgs e)
         {
-            if (VsyncDescription.Contains(e.X, e.Y)
-            ||  VsyncIndicator.Contains(e.X, e.Y))
-            {
-                VsyncDescription.Style = Text.Styles.Underlined;
-            }
             if (Save.Contains(e.X, e.Y))
             {
                 Save.Style = Text.Styles.Underlined;
@@ -162,22 +155,21 @@ namespace Helen.App.Scenes
 
         private async Task OnMouseButtonReleased(MouseButtonEventArgs e)
         {
-            VsyncDescription.Style = Text.Styles.Regular;
-            Save.Style             = Text.Styles.Regular;
-            Back.Style             = Text.Styles.Regular;
+            Save.Style = Text.Styles.Regular;
+            Back.Style = Text.Styles.Regular;
             SaveDot.DisplayedString = "";
             BackDot.DisplayedString = "";
 
-            if (VsyncDescription.Contains(e.X, e.Y)
-            ||  VsyncIndicator.Contains(e.X, e.Y))
+            if (Vsync.Contains(e.X, e.Y))
             {
                 Settings.Instance.Toggle(Preferences.Vsync);
+                Vsync.DisplayedString = VsyncText;
                 _window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
-                VsyncIndicator.DisplayedString = (Settings.Instance.Vsync) ? Glyphs.ToggleOn : Glyphs.ToggleOff;
             }
             if (Save.Contains(e.X, e.Y))
             {
                 await Settings.Save();
+                Program.Navigate(SceneService.TitleScene);
             }
             if (Back.Contains(e.X, e.Y))
             {

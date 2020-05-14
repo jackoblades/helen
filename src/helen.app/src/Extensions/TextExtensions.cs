@@ -26,6 +26,20 @@ namespace Helen.App.Extensions
             return text.GetGlobalBounds().Contains(x, y);
         }
 
+        /// <summary>
+        /// If the specified position lies within this <see cref="Text"/> space, underline it.
+        /// </summary>
+        public static void Indicate(this Text text, Vector2i position)
+        {
+            text.Style = (text.Contains(position.X, position.Y))
+                       ? Text.Styles.Underlined
+                       : Text.Styles.Regular;
+        }
+
+        /// <summary>
+        /// If the specified position lies within this <see cref="Text"/> space,
+        /// show its indicator, unless it is under a click.
+        /// </summary>
         public static void Indicate(this Text indicator, Text text, Vector2i position)
         {
             indicator.DisplayedString = text.Contains(position)
