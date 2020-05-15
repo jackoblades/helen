@@ -53,7 +53,11 @@ namespace Helen.App.Models
         /// Volume at which the music plays.
         /// 0 <= <see cref=MusicVolumeSafe/> <= 100.
         /// </summary>
-        public int MusicVolumeSafe => MusicVolume.WithBounds(0, 100);
+        public int MusicVolumeSafe
+        {
+            get => MusicVolume.WithBounds(0, 100);
+            set => MusicVolume = value.WithBounds(0, 100);
+        }
 
         #endregion
 
@@ -78,7 +82,7 @@ namespace Helen.App.Models
 
         public static void Init()
         {
-            Instance = Load().Result ?? Generate();
+            Instance = LoadAsync().Result ?? GenerateAsync().Result;
         }
 
         public void Toggle(Preferences pref)
@@ -86,23 +90,26 @@ namespace Helen.App.Models
             Preferences = Preferences.Toggle(pref);
         }
 
-        private static async Task<Settings> Load()
+        private static async Task<Settings> LoadAsync()
         {
             return await SettingsCharter.ReadAsync();
         }
 
-        public static async Task Save()
+        public static async Task SaveAsync(Settings settings = null)
         {
-            await SettingsCharter.UpsertAsync(Instance);
+            await SettingsCharter.UpsertAsync(settings ?? Instance);
         }
 
-        private static Settings Generate()
+        private async static Task<Settings> GenerateAsync()
         {
-            return new Settings()
+            var settings = new Settings()
             {
                 Id = Guid.Empty, // Enforce a single persistent instance.
                 Preferences = Preferences.Vsync,
+                MusicVolume = 50,
             };
+            await SaveAsync(settings);
+            return settings;
         }
 
         #endregion

@@ -19,6 +19,11 @@ namespace Helen.App.Scenes
 
         protected Text Title;
 
+        protected Text MusicVolume;
+        private string MusicVolumeText => $"Music Volume:  {Settings.Instance.MusicVolumeSafe}";
+        protected Text MusicDecrease;
+        protected Text MusicIncrease;
+
         protected Text Vsync;
         private string VsyncText => (Settings.Instance.Vsync) ? "VSync:  On" : "VSync:  Off";
 
@@ -52,6 +57,9 @@ namespace Helen.App.Scenes
             _drawables = new Drawable[]
             {
                 Title,
+                MusicVolume,
+                MusicDecrease,
+                MusicIncrease,
                 Vsync,
                 Save,
                 SaveDot,
@@ -69,6 +77,14 @@ namespace Helen.App.Scenes
         {
             Title = new Text("Settings", Fonts.FontTitle, 60);
             Title.Position = new Vector2f(100f, 50f);
+
+            MusicVolume = new Text(MusicVolumeText, Fonts.FontBody, 40);
+            MusicVolume.Position = new Vector2f(150f, 250f);
+
+            MusicDecrease = new Text("<", Fonts.FontUnicode, 40);
+            MusicDecrease.Position = new Vector2f(480f, 250f);
+            MusicIncrease = new Text(">", Fonts.FontUnicode, 40);
+            MusicIncrease.Position = new Vector2f(520f, 250f);
 
             Vsync = new Text(VsyncText, Fonts.FontBody, 40);
             Vsync.Position = new Vector2f(150f, 300f);
@@ -91,6 +107,7 @@ namespace Helen.App.Scenes
         {
             base.Open();
             Settings.Backup = new Settings(Settings.Instance);
+            MusicVolume.DisplayedString = MusicVolumeText;
             Vsync.DisplayedString = VsyncText;
             return this;
         }
@@ -105,7 +122,9 @@ namespace Helen.App.Scenes
             var mousePosition = Mouse.GetPosition(_window);
             SaveDot.Indicate(Save, mousePosition);
             BackDot.Indicate(Back, mousePosition);
-            Vsync.Indicate(mousePosition);
+            Vsync.Indicate(mousePosition, Text.Styles.Underlined);
+            MusicDecrease.Indicate(mousePosition, Text.Styles.Bold);
+            MusicIncrease.Indicate(mousePosition, Text.Styles.Bold);
         }
 
         #endregion
@@ -134,6 +153,14 @@ namespace Helen.App.Scenes
 
         private void OnMouseButtonPressed(MouseButtonEventArgs e)
         {
+            if (MusicDecrease.Contains(e.X, e.Y))
+            {
+                MusicDecrease.Style = MusicDecrease.Style.TurnOn(Text.Styles.Underlined);
+            }
+            if (MusicIncrease.Contains(e.X, e.Y))
+            {
+                MusicIncrease.Style = MusicIncrease.Style.TurnOn(Text.Styles.Underlined);
+            }
             if (Save.Contains(e.X, e.Y))
             {
                 Save.Style = Text.Styles.Underlined;
@@ -158,11 +185,23 @@ namespace Helen.App.Scenes
 
         private async Task OnMouseButtonReleased(MouseButtonEventArgs e)
         {
+            MusicDecrease.Style = MusicDecrease.Style.TurnOff(Text.Styles.Underlined);
+            MusicIncrease.Style = MusicIncrease.Style.TurnOff(Text.Styles.Underlined);
             Save.Style = Text.Styles.Regular;
             Back.Style = Text.Styles.Regular;
             SaveDot.DisplayedString = "";
             BackDot.DisplayedString = "";
 
+            if (MusicDecrease.Contains(e.X, e.Y))
+            {
+                Settings.Instance.MusicVolumeSafe -= 5;
+                MusicVolume.DisplayedString = MusicVolumeText;
+            }
+            if (MusicIncrease.Contains(e.X, e.Y))
+            {
+                Settings.Instance.MusicVolumeSafe += 5;
+                MusicVolume.DisplayedString = MusicVolumeText;
+            }
             if (Vsync.Contains(e.X, e.Y))
             {
                 Settings.Instance.Toggle(Preferences.Vsync);
@@ -171,7 +210,7 @@ namespace Helen.App.Scenes
             }
             if (Save.Contains(e.X, e.Y))
             {
-                await Settings.Save();
+                await Settings.SaveAsync();
                 Program.Navigate(SceneService.TitleScene);
             }
             if (Back.Contains(e.X, e.Y))

@@ -27,13 +27,14 @@ namespace Helen.App.Extensions
         }
 
         /// <summary>
-        /// If the specified position lies within this <see cref="Text"/> space, underline it.
+        /// If the specified position lies within this <see cref="Text"/> space,
+        /// decorate it with the specified style.
         /// </summary>
-        public static void Indicate(this Text text, Vector2i position)
+        public static void Indicate(this Text text, Vector2i position, Text.Styles style)
         {
             text.Style = (text.Contains(position.X, position.Y))
-                       ? Text.Styles.Underlined
-                       : Text.Styles.Regular;
+                       ? text.Style.TurnOn(style)
+                       : text.Style.TurnOff(style);
         }
 
         /// <summary>
