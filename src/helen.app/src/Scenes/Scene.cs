@@ -10,8 +10,6 @@ namespace Helen.App.Scenes
 
         protected RenderWindow _window;
 
-        public Music Music;
-
         #endregion
 
         #region Properties

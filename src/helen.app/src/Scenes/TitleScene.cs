@@ -72,8 +72,6 @@ namespace Helen.App.Scenes
 
         public override void Init()
         {
-            Music = new Music("res/sfx/Kevin_MacLeod/Moorland.ogg");
-
             Title = new Text("YeomanSaga", Fonts.FontTitle, 100);
             Title.Position = new Vector2f(40f, 100f);
 
@@ -101,7 +99,7 @@ namespace Helen.App.Scenes
         public override Scene Open()
         {
             base.Open();
-            if (Music.Status != SoundStatus.Playing) Music.Play();
+            MusicService.Swap(Tracks.Title);
             return this;
         }
 

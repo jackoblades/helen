@@ -32,6 +32,7 @@ namespace Helen.App
         {
             Orm.InitAsync().Wait();
             Settings.Init();
+            MusicService.Init();
 
             var mode = new VideoMode(800, 600);
             Window = new RenderWindow(mode, "YeomanSaga");
@@ -71,7 +72,7 @@ namespace Helen.App
 
         public static void Close()
         {
-            CurrentScene?.Music?.Stop();
+            MusicService.Close();
             Window.Close();
         }
 

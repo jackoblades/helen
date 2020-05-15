@@ -196,11 +196,13 @@ namespace Helen.App.Scenes
             {
                 Settings.Instance.MusicVolumeSafe -= 5;
                 MusicVolume.DisplayedString = MusicVolumeText;
+                MusicService.Music.Volume = Settings.Instance.MusicVolumeSafe;
             }
             if (MusicIncrease.Contains(e.X, e.Y))
             {
                 Settings.Instance.MusicVolumeSafe += 5;
                 MusicVolume.DisplayedString = MusicVolumeText;
+                MusicService.Music.Volume = Settings.Instance.MusicVolumeSafe;
             }
             if (Vsync.Contains(e.X, e.Y))
             {
