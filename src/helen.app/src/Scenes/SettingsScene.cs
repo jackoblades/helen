@@ -226,6 +226,7 @@ namespace Helen.App.Scenes
         {
             Settings.Instance = Settings.Backup;
             _window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
+            MusicService.Music.Volume = Settings.Instance.MusicVolumeSafe;
         }
 
         #endregion
