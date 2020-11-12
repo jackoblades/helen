@@ -21,6 +21,9 @@ namespace Helen.App.Services
         public static Scene SettingsScene => _settingsScene ?? (_settingsScene = new SettingsScene(Window));
         private static Scene _settingsScene;
 
+        public static Scene BattleScene => _battleScene ?? (_battleScene = new BattleScene(Window));
+        private static Scene _battleScene;
+
         #endregion
 
         #region Methods

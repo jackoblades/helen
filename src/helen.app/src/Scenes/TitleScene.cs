@@ -202,6 +202,7 @@ namespace Helen.App.Scenes
 
             if      (Option1.Contains(e.X, e.Y))
             {
+                Program.Navigate(SceneService.BattleScene);
             }
             else if (Option2.Contains(e.X, e.Y))
             {
