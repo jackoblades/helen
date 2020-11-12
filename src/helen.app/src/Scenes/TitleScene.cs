@@ -72,8 +72,8 @@ namespace Helen.App.Scenes
 
         public override void Init()
         {
-            Title = new Text("YeomanSaga", Fonts.FontTitle, 100);
-            Title.Position = new Vector2f(40f, 100f);
+            Title = new Text("Helen", Fonts.FontTitle, 120);
+            Title.Position = new Vector2f(200f, 100f);
 
             Option1 = new Text("New",      Fonts.FontBody, 40);
             Option2 = new Text("Load",     Fonts.FontBody, 40);
