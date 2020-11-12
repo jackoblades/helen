@@ -7,13 +7,28 @@ using System.Threading.Tasks;
 
 namespace Helen.App.Repository.Charters
 {
-    public static class SettingsCharter
+    public class SettingsCharter : Charter
     {
-        public static async Task<Settings> ReadAsync()
+        #region Properties
+
+        public static SettingsCharter Instance => _instance ?? (_instance = new SettingsCharter(Orm.Instance));
+        private static SettingsCharter _instance;
+
+        #endregion
+
+        #region Constructors
+
+        public SettingsCharter(Orm orm) : base(orm) { }
+
+        #endregion
+
+        #region Methods
+
+        public async Task<Settings> ReadAsync()
         {
             Settings result = null;
 
-            using (var db = await Orm.Instance.GetDatabaseAsync())
+            using (var db = await _orm.GetDatabaseAsync())
             {
                 using (var cmd = new SqliteCommand($"SELECT * FROM {nameof(Settings)} LIMIT 1", db))
                 {
@@ -32,9 +47,9 @@ namespace Helen.App.Repository.Charters
             return result;
         }
 
-        public static async Task UpsertAsync(Settings settings, SqliteCommand parentCmd = null)
+        public async Task UpsertAsync(Settings settings, SqliteCommand parentCmd = null)
         {
-            using (var database = parentCmd?.Connection == null ? await Orm.Instance.GetDatabaseAsync() : null)
+            using (var database = parentCmd?.Connection == null ? await _orm.GetDatabaseAsync() : null)
             {
                 var db = database ?? parentCmd.Connection;
 
@@ -62,7 +77,7 @@ namespace Helen.App.Repository.Charters
             }
         }
 
-        private static Settings Map(Settings settings, IDictionary<string, object> row)
+        private Settings Map(Settings settings, IDictionary<string, object> row)
         {
             settings.Id          = Orm.MapGuid(row[nameof(settings.Id)]);
             settings.MusicVolume = Orm.MapInt(row[nameof(settings.MusicVolume)]);
@@ -70,11 +85,13 @@ namespace Helen.App.Repository.Charters
             return settings;
         }
 
-        private static void AmendParameters(Settings settings, SqliteCommand cmd)
+        private void AmendParameters(Settings settings, SqliteCommand cmd)
         {
             cmd.AddParameter($"@{nameof(settings.Id)}",          settings.Id);
             cmd.AddParameter($"@{nameof(settings.MusicVolume)}", settings.MusicVolume);
             cmd.AddParameter($"@{nameof(settings.Preferences)}", settings.Preferences);
         }
+
+        #endregion
     }
 }

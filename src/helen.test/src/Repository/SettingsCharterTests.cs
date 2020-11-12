@@ -1,4 +1,6 @@
+using Helen.App.Models;
 using Helen.App.Repository;
+using Helen.App.Repository.Charters;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,12 +12,12 @@ namespace Helen.Test.Repository
     {
         #region Methods
 
-        private async Task<Orm> InitAsync(string testname)
+        private async Task<SettingsCharter> InitAsync(string testname)
         {
             Directory.CreateDirectory($"./{nameof(SettingsCharterTests)}/");
             var filepath = $"./{nameof(SettingsCharterTests)}/{testname}.sqlite3";
             File.Delete(filepath);
-            return await new Orm(filepath).InitAsync();
+            return new SettingsCharter(await new Orm(filepath).InitAsync());
         }
 
         #endregion
@@ -23,9 +25,26 @@ namespace Helen.Test.Repository
         #region Tests
 
         [Fact]
-        public async Task Test1()
+        public async Task Settings_UpsertRead()
         {
-            var orm = await InitAsync(nameof(Test1));
+            // Arrange.
+            var charter = await InitAsync(nameof(Settings_UpsertRead));
+
+            var expected = new Settings()
+            {
+                Id = Guid.NewGuid(),
+                Preferences = Preferences.Vsync,
+                MusicVolume = 50,
+            };
+
+            // Act.
+            await charter.UpsertAsync(expected);
+            var actual = await charter.ReadAsync();
+
+            // Assert.
+            Assert.Equal(expected.Id,          actual.Id);
+            Assert.Equal(expected.Preferences, actual.Preferences);
+            Assert.Equal(expected.MusicVolume, actual.MusicVolume);
         }
 
         #endregion

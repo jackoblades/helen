@@ -92,12 +92,12 @@ namespace Helen.App.Models
 
         private static async Task<Settings> LoadAsync()
         {
-            return await SettingsCharter.ReadAsync();
+            return await SettingsCharter.Instance.ReadAsync();
         }
 
         public static async Task SaveAsync(Settings settings = null)
         {
-            await SettingsCharter.UpsertAsync(settings ?? Instance);
+            await SettingsCharter.Instance.UpsertAsync(settings ?? Instance);
         }
 
         private async static Task<Settings> GenerateAsync()
