@@ -1,4 +1,7 @@
+using Helen.App.Repository;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Helen.Test.Repository
@@ -7,9 +10,12 @@ namespace Helen.Test.Repository
     {
         #region Methods
 
-        private Orm Init(string testname)
+        private async Task<Orm> InitAsync(string testname)
         {
-            
+            Directory.CreateDirectory($"./{nameof(SettingsCharterTests)}/");
+            var filepath = $"./{nameof(SettingsCharterTests)}/{testname}.sqlite3";
+            File.Delete(filepath);
+            return await new Orm(filepath).InitAsync();
         }
 
         #endregion
@@ -17,9 +23,9 @@ namespace Helen.Test.Repository
         #region Tests
 
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
-
+            var orm = await InitAsync(nameof(Test1));
         }
 
         #endregion

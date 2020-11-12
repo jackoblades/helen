@@ -30,12 +30,12 @@ namespace Helen.App
 
         static void Main(string[] args)
         {
-            Orm.InitAsync().Wait();
+            Orm.Instance.InitAsync().Wait();
             Settings.Init();
             MusicService.Init();
 
             var mode = new VideoMode(800, 600);
-            Window = new RenderWindow(mode, "YeomanSaga");
+            Window = new RenderWindow(mode, "Helen");
             Window.Closed += (x, y) => Close();
             Window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
 

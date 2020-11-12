@@ -13,7 +13,7 @@ namespace Helen.App.Repository.Charters
         {
             Settings result = null;
 
-            using (var db = await Orm.GetDatabaseAsync())
+            using (var db = await Orm.Instance.GetDatabaseAsync())
             {
                 using (var cmd = new SqliteCommand($"SELECT * FROM {nameof(Settings)} LIMIT 1", db))
                 {
@@ -34,7 +34,7 @@ namespace Helen.App.Repository.Charters
 
         public static async Task UpsertAsync(Settings settings, SqliteCommand parentCmd = null)
         {
-            using (var database = parentCmd?.Connection == null ? await Orm.GetDatabaseAsync() : null)
+            using (var database = parentCmd?.Connection == null ? await Orm.Instance.GetDatabaseAsync() : null)
             {
                 var db = database ?? parentCmd.Connection;
 

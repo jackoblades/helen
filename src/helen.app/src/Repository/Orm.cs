@@ -12,6 +12,7 @@ namespace Helen.App.Repository
         #region Properties
 
         public static Orm Instance => _instance ?? (_instance = new Orm(InstanceName));
+        private static Orm _instance;
 
         public const int UserVersion = 1;
 
@@ -34,8 +35,9 @@ namespace Helen.App.Repository
 
         /// <summary>
         /// Opens/Creates a DB, constructs the schema, creating tables as needed.
+        /// Returns this.
         /// </summary>
-        public static async Task InitAsync()
+        public async Task<Orm> InitAsync()
         {
             using (var db = await GetDatabaseAsync())
             {
@@ -46,9 +48,11 @@ namespace Helen.App.Repository
                             .Column(nameof(Settings.MusicVolume), OrmType.Int, false)
                             .Build());
             }
+
+            return this;
         }
 
-        public static async Task<SqliteConnection> GetDatabaseAsync()
+        public async Task<SqliteConnection> GetDatabaseAsync()
         {
             // Find out if our DB exists before we attempt to open, which we will create if it does not exist.
             var isNew = File.Exists(_filepath);
