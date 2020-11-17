@@ -35,8 +35,8 @@ namespace Helen.App
             MusicService.Init();
 
             var mode = new VideoMode(800, 600);
-            Window = new RenderWindow(mode, "Helen");
-            Window.Closed += (x, y) => Close();
+            Window = new RenderWindow(mode, "Helen", Styles.Titlebar | Styles.Close);
+            Window.Closed += (sender, args) => Close(args);
             Window.SetVerticalSyncEnabled(Settings.Instance.Vsync);
 
             // Services.
@@ -67,7 +67,7 @@ namespace Helen.App
             }
         }
 
-        public static void Close()
+        public static void Close(EventArgs args = null)
         {
             MusicService.Close();
             Window.Close();

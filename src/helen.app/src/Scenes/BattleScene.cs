@@ -17,16 +17,30 @@ namespace Helen.App.Scenes
 
         #region Entities
 
+        protected Texture BorderTexture;
+        protected Texture PortraitTexture;
+        protected Texture EnemyTexture;
+        protected Texture AlliedTexture;
+        protected Texture BgTexture;
+
+        protected Sprite Background;
         protected RectangleShape TopInfoArea;
         protected RectangleShape BotInfoArea;
+        protected Sprite TopBorder;
+        protected Sprite BotBorder;
+        protected Sprite EnemyPortrait;
+        protected Sprite AlliedPortrait;
+        protected Sprite EnemyBorder;
+        protected Sprite AlliedBorder;
 
-        protected RectangleShape TopInfoBorder;
-        protected RectangleShape BotInfoBorder;
-
-        protected Text EnemyActorStatus1;
-        protected Text EnemyActorStatus2;
-        protected Text AlliedActorStatus1;
-        protected Text AlliedActorStatus2;
+        protected Text EnemyActorName;
+        protected Text EnemyActorStatus;
+        protected Text EnemyActorAction;
+        protected Text EnemyActorEffects;
+        protected Text AlliedActorName;
+        protected Text AlliedActorStatus;
+        protected Text AlliedActorAction;
+        protected Text AlliedActorEffects;
 
         #endregion
 
@@ -51,12 +65,20 @@ namespace Helen.App.Scenes
             {
                 TopInfoArea,
                 BotInfoArea,
-                TopInfoBorder,
-                BotInfoBorder,
-                //EnemyActorStatus1,
-                //EnemyActorStatus2,
-                //AlliedActorStatus1,
-                //AlliedActorStatus2,
+                TopBorder,
+                BotBorder,
+                EnemyBorder,
+                AlliedBorder,
+                EnemyPortrait,
+                AlliedPortrait,
+                EnemyActorName,
+                EnemyActorStatus,
+                EnemyActorAction,
+                EnemyActorEffects,
+                AlliedActorName,
+                AlliedActorStatus,
+                AlliedActorAction,
+                AlliedActorEffects,
             };
         }
 
@@ -66,19 +88,63 @@ namespace Helen.App.Scenes
 
         public override void Init()
         {
+            BorderTexture = new Texture("res/gfx/self/border.png") { Repeated = true };
+            PortraitTexture = new Texture("res/gfx/self/portrait_border.png");
+            EnemyTexture  = new Texture("res/gfx/wl/antagonist.png");
+            AlliedTexture = new Texture("res/gfx/wl/protagonist.png");
+            //BgTexture = new Texture("res/gfx/glitch/forest.png");
+
             TopInfoArea = new RectangleShape(new Vector2f(2000f, 100f));
             TopInfoArea.Position = new Vector2f(0f, 0f);
             TopInfoArea.FillColor = new Color(50, 50, 50);
-            BotInfoArea = new RectangleShape(new Vector2f(2000f, 200f));
-            BotInfoArea.Position = new Vector2f(0f, 600f);
+            BotInfoArea = new RectangleShape(new Vector2f(2000f, 110f));
+            BotInfoArea.Position = new Vector2f(0f, SceneService.WindowHeight - 110);
             BotInfoArea.FillColor = new Color(50, 50, 50);
 
-            TopInfoBorder = new RectangleShape(new Vector2f(2000f, 2f));
-            TopInfoBorder.Position = new Vector2f(0f, 98f);
-            TopInfoBorder.FillColor = new Color(250, 250, 250);
-            BotInfoBorder = new RectangleShape(new Vector2f(2000f, 2f));
-            BotInfoBorder.Position = new Vector2f(0f, 600f);
-            BotInfoBorder.FillColor = new Color(250, 250, 250);
+            TopBorder = new Sprite(BorderTexture, new IntRect(0, 0, 2000, 11));
+            TopBorder.Position = new Vector2f(0f, 100f);
+            BotBorder = new Sprite(BorderTexture, new IntRect(0, 0, 2000, 11));
+            BotBorder.Position = new Vector2f(0f, SceneService.WindowHeight - 110);
+
+            EnemyBorder = new Sprite(PortraitTexture);
+            EnemyBorder.Scale = new Vector2f(.25f, .25f);
+            EnemyBorder.Position = new Vector2f(7f, 7f);
+            AlliedBorder = new Sprite(PortraitTexture);
+            AlliedBorder.Scale = new Vector2f(.25f, .25f);
+            AlliedBorder.Position = new Vector2f(7f, SceneService.WindowHeight - 87);
+
+            EnemyPortrait = new Sprite(EnemyTexture);
+            EnemyPortrait.Scale = new Vector2f(.25f, .25f);
+            EnemyPortrait.Position = new Vector2f(9.5f, 9f);
+            AlliedPortrait = new Sprite(AlliedTexture);
+            AlliedPortrait.Scale = new Vector2f(.25f, .25f);
+            AlliedPortrait.Position = new Vector2f(10.5f, SceneService.WindowHeight - 85);
+
+            EnemyActorName = new Text("Antagonist", Fonts.FontBody, 24);
+            EnemyActorName.Position = new Vector2f(100f, 30f);
+            EnemyActorName.FillColor = new Color(255, 255, 255);
+            EnemyActorStatus = new Text("HP: 100 of 100", Fonts.FontBody, 24);
+            EnemyActorStatus.Position = new Vector2f(300f, 30f);
+            EnemyActorStatus.FillColor = new Color(255, 255, 255);
+            EnemyActorAction = new Text("Great Swing", Fonts.FontBody, 24);
+            EnemyActorAction.Position = new Vector2f(100f, 60f);
+            EnemyActorAction.FillColor = new Color(255, 255, 255);
+            EnemyActorEffects = new Text("Eff: 34   Def:  5   Wait: 10", Fonts.FontBody, 24);
+            EnemyActorEffects.Position = new Vector2f(300f, 60f);
+            EnemyActorEffects.FillColor = new Color(255, 255, 255);
+
+            AlliedActorName = new Text("Protagonist", Fonts.FontBody, 24);
+            AlliedActorName.Position = new Vector2f(100f, SceneService.WindowHeight - 65);
+            AlliedActorName.FillColor = new Color(255, 255, 255);
+            AlliedActorStatus = new Text("HP:  80 of 100", Fonts.FontBody, 24);
+            AlliedActorStatus.Position = new Vector2f(300f, SceneService.WindowHeight - 65);
+            AlliedActorStatus.FillColor = new Color(255, 255, 255);
+            AlliedActorAction = new Text("Flamberge", Fonts.FontBody, 24);
+            AlliedActorAction.Position = new Vector2f(100f, SceneService.WindowHeight - 35);
+            AlliedActorAction.FillColor = new Color(255, 255, 255);
+            AlliedActorEffects = new Text("Eff: 56   Def: 15   Wait:  5", Fonts.FontBody, 24);
+            AlliedActorEffects.Position = new Vector2f(300f, SceneService.WindowHeight - 35);
+            AlliedActorEffects.FillColor = new Color(255, 255, 255);
         }
 
         public override Scene Open()
@@ -125,7 +191,7 @@ namespace Helen.App.Scenes
         {
         }
 
-        protected override async void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             switch (e.Button)
             {

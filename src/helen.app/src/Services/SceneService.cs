@@ -15,6 +15,9 @@ namespace Helen.App.Services
 
         #region Properties
 
+        public static uint WindowWidth  => Window?.Size.X ?? 0;
+        public static uint WindowHeight => Window?.Size.Y ?? 0;
+
         public static Scene TitleScene => _titleScene ?? (_titleScene = new TitleScene(Window));
         private static Scene _titleScene;
 
