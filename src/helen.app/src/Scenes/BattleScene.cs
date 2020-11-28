@@ -63,9 +63,10 @@ namespace Helen.App.Scenes
         {
             _drawables = new Drawable[]
             {
+                Background,
                 TopInfoArea,
-                BotInfoArea,
                 TopBorder,
+                BotInfoArea,
                 BotBorder,
                 EnemyBorder,
                 AlliedBorder,
@@ -92,7 +93,11 @@ namespace Helen.App.Scenes
             PortraitTexture = new Texture("res/gfx/self/portrait_border.png");
             EnemyTexture  = new Texture("res/gfx/wl/antagonist.png");
             AlliedTexture = new Texture("res/gfx/wl/protagonist.png");
-            //BgTexture = new Texture("res/gfx/glitch/forest.png");
+            BgTexture = new Texture("res/gfx/parallax/forest.png");
+
+            Background = new Sprite(BgTexture);
+            Background.Scale = new Vector2f(3f, 3f);
+            Background.Position = new Vector2f(0f, 10f);
 
             TopInfoArea = new RectangleShape(new Vector2f(2000f, 100f));
             TopInfoArea.Position = new Vector2f(0f, 0f);
