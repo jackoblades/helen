@@ -1,5 +1,6 @@
 using Helen.App.Extensions;
 using Helen.App.Models;
+using Helen.Core;
 using Microsoft.Data.Sqlite;
 using System;
 using System.IO;
@@ -46,6 +47,15 @@ namespace Helen.App.Repository
                             .Id()
                             .Column(nameof(Settings.Preferences), OrmType.Int, false)
                             .Column(nameof(Settings.MusicVolume), OrmType.Int, false)
+                            .Build());
+                await db.ExecuteNonQueryAsync(new TableFactory(nameof(Weapon))
+                            .Id()
+                            .Column(nameof(Weapon.Name),          OrmType.Text, false)
+                            .Column(nameof(Weapon.Effectiveness), OrmType.Int, false)
+                            .Column(nameof(Weapon.Defense),       OrmType.Int, false)
+                            .Column(nameof(Weapon.Speed),         OrmType.Int, false)
+                            .Column(nameof(Weapon.Stun),          OrmType.Int, false)
+                            .Column(nameof(Weapon.Properties),    OrmType.Int, false)
                             .Build());
             }
 

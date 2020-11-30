@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\helen.app\helen.app.csproj" />
+    <ProjectReference Include="..\helen.core\helen.core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

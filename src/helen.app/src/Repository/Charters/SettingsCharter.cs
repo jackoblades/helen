@@ -70,7 +70,7 @@ namespace Helen.App.Repository.Charters
 
                         // Upsert other components, if any.
 
-                        // Commit, if we newly created the transaction.
+                        // Commit, if this upsert created the transaction.
                         transaction?.Commit();
                     }
                 }

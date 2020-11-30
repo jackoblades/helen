@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Version>1.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\helen.core\helen.core.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="SFML.Net" Version="2.5.0"/>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.3"/>
