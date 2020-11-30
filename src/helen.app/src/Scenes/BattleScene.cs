@@ -22,6 +22,7 @@ namespace Helen.App.Scenes
         protected Texture EnemyTexture;
         protected Texture AlliedTexture;
         protected Texture BgTexture;
+        protected Texture CharacterTexture;
 
         protected Sprite Background;
         protected RectangleShape TopInfoArea;
@@ -32,6 +33,8 @@ namespace Helen.App.Scenes
         protected Sprite AlliedPortrait;
         protected Sprite EnemyBorder;
         protected Sprite AlliedBorder;
+        protected Sprite EnemyCharacter;
+        protected Sprite AlliedCharacter;
 
         protected Text EnemyActorName;
         protected Text EnemyActorStatus;
@@ -72,6 +75,8 @@ namespace Helen.App.Scenes
                 AlliedBorder,
                 EnemyPortrait,
                 AlliedPortrait,
+                EnemyCharacter,
+                AlliedCharacter,
                 EnemyActorName,
                 EnemyActorStatus,
                 EnemyActorAction,
@@ -94,6 +99,7 @@ namespace Helen.App.Scenes
             EnemyTexture  = new Texture("res/gfx/wl/antagonist.png");
             AlliedTexture = new Texture("res/gfx/wl/protagonist.png");
             BgTexture = new Texture("res/gfx/parallax/forest.png");
+            CharacterTexture = new Texture("res/gfx/josephseraph/heroes.png");
 
             Background = new Sprite(BgTexture);
             Background.Scale = new Vector2f(3f, 3f);
@@ -124,6 +130,13 @@ namespace Helen.App.Scenes
             AlliedPortrait = new Sprite(AlliedTexture);
             AlliedPortrait.Scale = new Vector2f(.25f, .25f);
             AlliedPortrait.Position = new Vector2f(10.5f, SceneService.WindowHeight - 85);
+
+            EnemyCharacter = new Sprite(CharacterTexture, new IntRect(23, 33, 22, 32));
+            EnemyCharacter.Scale = new Vector2f(3f, 3f);
+            EnemyCharacter.Position = new Vector2f(150f, 390f);
+            AlliedCharacter = new Sprite(CharacterTexture, new IntRect(67, 97, 22, 32));
+            AlliedCharacter.Scale = new Vector2f(3f, 3f);
+            AlliedCharacter.Position = new Vector2f(550f, 390f);
 
             EnemyActorName = new Text("Antagonist", Fonts.FontBody, 24);
             EnemyActorName.Position = new Vector2f(100f, 30f);
